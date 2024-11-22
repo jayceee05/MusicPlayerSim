@@ -1,0 +1,168 @@
+//Imports necesarios para la funcionalidad del proyecto
+import java.util.ArrayList;
+import java.util.Scanner;
+
+//Crear super clase Cancion, que dara sus atributos y metodos para que el programa sepa en que playlist van
+class Cancion {
+
+    String nombreCancion;
+    String duracion;
+    String generoMusical;
+    String cantante;
+    String autor;
+    char clavePL;
+
+    //Contruir la super clase, tambien agregando las canciones predeterminadas del sistema
+    public Cancion(String nombreCancion, String duracion, String generoMusical, String cantante, String autor, char clavePL) {
+        this.nombreCancion = nombreCancion;
+        this.duracion = duracion;
+        this.generoMusical = generoMusical;
+        this.cantante = cantante;
+        this.autor = autor;
+        this.clavePL = clavePL;
+    }
+
+    //Metodo para guardar las canciones predeterminadas en un Array
+    public void setCancion(ArrayList<Cancion> cancionesAgregadas) {
+        cancionesAgregadas.add(new Cancion("Radioactive", "3:06", "Electronica", "ImagineDragons", "ImagineDragons", 'G'));
+        cancionesAgregadas.add(new Cancion("HELLO", "3:46", "Electronica", "OMFG", "OMFG", 'G'));
+        cancionesAgregadas.add(new Cancion("Space in My Heart", "2:59", "Country Pop", "Enrique Iglesias", "Miranda Lambert", 'C'));
+        cancionesAgregadas.add(new Cancion("Strong Enough", "2:29", "Country Pop", "Jonas Brothers", "Bailey Zimmerman", 'C'));
+        cancionesAgregadas.add(new Cancion("Human REALITY", "1:40", "Breackcore", "TOKYOPILL", "TOKYOPILL", 'G'));
+        cancionesAgregadas.add(new Cancion("mania", "3:42", "Breakcore", "kazahana", "kazahana", 'G'));
+        cancionesAgregadas.add(new Cancion("OVERDO$E", "3:02", "Phonk", "Pharmacist", "Pharmacist", 'G'));
+        cancionesAgregadas.add(new Cancion("PARANOIA", "1:56", "Phonk", "Mista Playa", "Mista Playa", 'G'));
+        cancionesAgregadas.add(new Cancion("California Gurls", "3:55", "Pop", "Katy Perry", "Snoop Dogg", 'C'));
+        cancionesAgregadas.add(new Cancion("Call Me Maybe", "3:13", "Pop", "Carly Rae", "Carly Rae", 'C'));
+        cancionesAgregadas.add(new Cancion("Dynamite", "3:23", "Pop", "Taio Cruz", "Taio Cruz", 'C'));
+    }
+
+    //Crear un metodo para que el usuario agregue canciones nuevas a la playlist que quiera
+    public void agregarCancion(ArrayList<Cancion> cancionesAgregadas, Scanner input, String opcion) {
+        do {
+            System.out.println("Nombre de la cancion: ");
+            this.nombreCancion = input.next();
+            System.out.println("Duracion de la cancion: ");
+            this.duracion = input.next();
+            System.out.println("Genero musical: \ne: Electronica\ncp: Country Pop\nbc: Breakcore\nph: Phonk\np: Pop");
+            opcion = input.next();
+            switch (opcion) {
+                case "e":
+                    this.generoMusical = "Electronica";
+                    break;
+                case "cp":
+                    this.generoMusical = "Country Pop";
+                    break;
+                case "bc":
+                    this.generoMusical = "Breakcore";
+                    break;
+                case "ph":
+                    this.generoMusical = "Phonk";
+                    break;
+                case "p":
+                    this.generoMusical = "Pop";
+                    break;
+                default:
+                    System.out.println("Opcion no valida");
+                    break;
+            }
+            System.out.println("Cantante: ");
+            this.cantante = input.next();
+            System.out.println("Autor: ");
+            this.autor = input.next();
+            System.out.println("Playlist a la que se agregara: \nc: Chill\ng: Gym");
+            opcion = input.next();
+            switch (opcion) {
+                case "c":
+                    this.clavePL = 'C';
+                    break;
+                case "g":
+                    this.clavePL = 'G';
+                    break;
+                default:
+                    System.out.println("Opcion no valida");
+                    break;
+            }
+            cancionesAgregadas.add(new Cancion(this.nombreCancion, this.duracion, this.generoMusical, this.cantante, this.autor, this.clavePL));
+            System.out.println("Desea agregar otra cancion? s=si n=no ");
+            opcion = input.next();
+        } while (!opcion.equals("n"));
+    }
+
+    //Determinar a cual cancion queda cada playlist, sacando su clavePL
+    public char getClavePL() {
+        return clavePL;
+    }
+
+    //Contar cuantas canciones hay en la playlist
+    public int contarCanciones(ArrayList<Cancion> canciones) {
+        int cuenta = 0;
+        for (Cancion cancion : canciones) {
+            if (cancion.getClavePL() == 'C') {
+                cuenta++;
+            }
+        }
+        return cuenta;
+    }
+
+    //Metodo para reproducir la playlist que elija el usuario
+    public String playChill() {
+        return "\nNombre: " + nombreCancion + "\nDuracion: " + duracion + "\nGenero: " + generoMusical + "\nCantante: "
+                + cantante + "\nAutor: " + autor + "\n";
+    }
+
+    public String playGym() {
+        return "\nNombre: " + nombreCancion + "\nDuracion: " + duracion + "\nGenero: " + generoMusical + "\nCantante: "
+                + cantante + "\nAutor: " + autor + "\n";
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Cancion> cancionesAgregadas = new ArrayList<>();
+        String opcion = "";
+        int totalCanciones;
+        Cancion cancion = new Cancion("", "", "", "", "", ' ');
+        cancion.setCancion(cancionesAgregadas);
+        do {
+
+            System.out.println("---Spotifake---\n\na) Reproducir playlist\nb) Agregar canciones\ns) Salir");
+            opcion = input.next();
+
+            switch (opcion) {
+                case "a":
+                    System.out.println("Playlists disponibles: \nc: Chill\ng: Gym");
+                    opcion = input.next();
+                    if (opcion.equals("c")) {
+                        int totalChillCanciones = cancion.contarCanciones(cancionesAgregadas);
+                        System.out.println("Reproduciendo: Chill\nTotal Canciones: " + totalChillCanciones);
+                        for (Cancion c : cancionesAgregadas) {
+                            if (c.getClavePL() == 'C') {
+                                System.out.println(c.playChill());
+                            }
+                        }
+                    } else if (opcion.equals("g")) {
+                        int totalGymCanciones = cancion.contarCanciones(cancionesAgregadas);
+                        System.out.println("Reproduciendo: Gym\nTotal Canciones: " + totalGymCanciones);
+                        for (Cancion c : cancionesAgregadas) {
+                            if (c.getClavePL() == 'G') {
+                                System.out.println(c.playGym());
+                            }
+                        }
+                    }
+                    break;
+                case "b":
+                    cancion.agregarCancion(cancionesAgregadas, input, opcion);
+                    break;
+                case "s":
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opcion no valida");
+                    break;
+            }
+        } while (!opcion.equals("s"));
+    }
+}
